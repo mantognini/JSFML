@@ -1,7 +1,7 @@
 package org.jsfml.graphics;
 
 import org.jsfml.internal.JSFMLError;
-import org.jsfml.internal.NotNull;
+//import org.jsfml.internal.NotNull; // FIXME NotNull doesn't exist
 import org.jsfml.internal.SFMLNative;
 import org.jsfml.internal.UnsafeOperations;
 import org.jsfml.window.ContextSettings;
@@ -61,7 +61,8 @@ public final class RenderCanvas extends Canvas {
      * @param settings the OpenGL context settings.
      * @see Runner
      */
-    public RenderCanvas(Runner runner, @NotNull ContextSettings settings) {
+    public RenderCanvas(Runner runner, ContextSettings settings) {
+//    public RenderCanvas(Runner runner, @NotNull ContextSettings settings) { // FIXME NotNull doesn't exist
         SFMLNative.ensureDisplay();
         SFMLNative.loadNativeLibraries();
 
