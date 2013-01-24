@@ -38,6 +38,15 @@ public class Shader extends SFMLNativeObject implements ConstShader {
     public static final CurrentTextureType CURRENT_TEXTURE = new CurrentTextureType();
 
     /**
+     * Activates a shader for rendering.
+     * <p/>
+     * This is required only if you wish to use JSFML shaders in custom OpenGL code.
+     *
+     * @param shader the shader to activate.
+     */
+    public static native void bind(ConstShader shader);
+
+    /**
      * Checks if shaders are available on this system.
      *
      * @return {@code true} if shaders are available, {@code false} otherwise.
@@ -102,7 +111,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @throws IOException           in case an I/O error occurs.
      * @throws ShaderSourceException in case the shader could not be compiled or linked.
      */
-    public void loadFromSource(@NotNull String source, @NotNull Type shaderType)
+    public void loadFromSource(String source, Type shaderType)
             throws IOException, ShaderSourceException {
 
         SFMLErrorCapture.start();
@@ -125,7 +134,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @throws IOException           in case an I/O error occurs.
      * @throws ShaderSourceException in case the shader could not be compiled or linked.
      */
-    public void loadFromSource(@NotNull String vertexShaderSource, @NotNull String fragmentShaderSource)
+    public void loadFromSource(String vertexShaderSource, String fragmentShaderSource)
             throws IOException, ShaderSourceException {
 
         SFMLErrorCapture.start();
@@ -149,7 +158,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @throws IOException           in case an I/O error occurs.
      * @throws ShaderSourceException in case the shader could not be compiled or linked.
      */
-    public void loadFromStream(InputStream in, @NotNull Type shaderType)
+    public void loadFromStream(InputStream in, Type shaderType)
             throws IOException, ShaderSourceException {
 
         loadFromSource(new String(StreamUtil.readStream(in)), Objects.requireNonNull(shaderType));
@@ -180,7 +189,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @throws IOException           in case an I/O error occurs.
      * @throws ShaderSourceException in case the shader could not be compiled or linked.
      */
-    public void loadFromFile(Path path, @NotNull Type shaderType)
+    public void loadFromFile(Path path, Type shaderType)
             throws IOException, ShaderSourceException {
 
         loadFromSource(new String(StreamUtil.readFile(path)), Objects.requireNonNull(shaderType));
@@ -207,11 +216,11 @@ public class Shader extends SFMLNativeObject implements ConstShader {
     /**
      * Sets a float parameter ({@code float}) value in the shader.
      *
-     * @param name the parameter's name.
-     * @param x    the parameter's value.
+     * @param name  the parameter's name.
+     * @param value the parameter's value.
      */
-    public void setParameter(@NotNull String name, float x) {
-        nativeSetParameter(Objects.requireNonNull(name), x);
+    public void setParameter(String name, float value) {
+        nativeSetParameter(Objects.requireNonNull(name), value);
     }
 
     private native void nativeSetParameter(String name, float x, float y);
@@ -223,7 +232,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @param x    the parameter's value.
      * @param y    the parameter's value.
      */
-    public void setParameter(@NotNull String name, float x, float y) {
+    public void setParameter(String name, float x, float y) {
         nativeSetParameter(Objects.requireNonNull(name), x, y);
     }
 
@@ -247,7 +256,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @param y    the parameter's value.
      * @param z    the parameter's value.
      */
-    public void setParameter(@NotNull String name, float x, float y, float z) {
+    public void setParameter(String name, float x, float y, float z) {
         nativeSetParameter(Objects.requireNonNull(name), x, y, z);
     }
 
@@ -272,7 +281,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @param z    the parameter's value.
      * @param w    the parameter's value.
      */
-    public void setParameter(@NotNull String name, float x, float y, float z, float w) {
+    public void setParameter(String name, float x, float y, float z, float w) {
         nativeSetParameter(Objects.requireNonNull(name), x, y, z, w);
     }
 
@@ -298,7 +307,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @param name  the parameter's name.
      * @param xform the parameter's value.
      */
-    public void setParameter(@NotNull String name, @NotNull Transform xform) {
+    public void setParameter(String name, Transform xform) {
         nativeSetParameter(Objects.requireNonNull(name), Objects.requireNonNull(xform));
     }
 
@@ -310,7 +319,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @param name    the parameter's name.
      * @param texture the parameter's value.
      */
-    public void setParameter(@NotNull String name, @NotNull ConstTexture texture) {
+    public void setParameter(String name, ConstTexture texture) {
         nativeSetParameter(Objects.requireNonNull(name), (Texture) Objects.requireNonNull(texture));
     }
 
@@ -326,10 +335,7 @@ public class Shader extends SFMLNativeObject implements ConstShader {
      * @param name           the parameter's name.
      * @param currentTexture should be {@link Shader#CURRENT_TEXTURE}.
      */
-    public void setParameter(@NotNull String name, CurrentTextureType currentTexture) {
+    public void setParameter(String name, CurrentTextureType currentTexture) {
         nativeSetParameterCurrentTexture(Objects.requireNonNull(name));
     }
-
-    @Override
-    public native void bind();
 }

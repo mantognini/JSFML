@@ -39,6 +39,28 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
         PIXELS
     }
 
+    private static native void nativeBind(Texture texture, CoordinateType coordinateType);
+
+    /**
+     * Activates a texture for rendering with the specified coordinate type.
+     * <p/>
+     * This is required only if you wish to use JSFML textures in custom OpenGL code.
+     *
+     * @param texture        the texture to bind.
+     * @param coordinateType the coordinate type to use.
+     */
+    public static void bind(ConstTexture texture, CoordinateType coordinateType) {
+        nativeBind((Texture) texture, Objects.requireNonNull(coordinateType));
+    }
+
+    /**
+     * Activates a texture for rendering, using the
+     * {@link Texture.CoordinateType#NORMALIZED} coordinate type.
+     */
+    public static void bind(ConstTexture texture) {
+        bind(texture, CoordinateType.NORMALIZED);
+    }
+
     /**
      * Constructs a new texture.
      */
@@ -104,7 +126,7 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
      * @param area the area of the image to load into the texture.
      * @throws IOException in case an I/O error occurs.
      */
-    public void loadFromStream(InputStream in, @NotNull IntRect area) throws IOException {
+    public void loadFromStream(InputStream in, IntRect area) throws IOException {
         SFMLErrorCapture.start();
         final boolean success = nativeLoadFromMemory(StreamUtil.readStream(in), Objects.requireNonNull(area));
         final String msg = SFMLErrorCapture.finish();
@@ -132,7 +154,7 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
      * @param area the area of the image to load into the texture.
      * @throws IOException in case an I/O error occurs.
      */
-    public void loadFromFile(Path path, @NotNull IntRect area) throws IOException {
+    public void loadFromFile(Path path, IntRect area) throws IOException {
         SFMLErrorCapture.start();
         final boolean success = nativeLoadFromMemory(StreamUtil.readFile(path), Objects.requireNonNull(area));
         final String msg = SFMLErrorCapture.finish();
@@ -161,7 +183,7 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
      * @param area  the area of the image to load into the texture.
      * @throws TextureCreationException if the texture could not be loaded from the image.
      */
-    public void loadFromImage(@NotNull Image image, @NotNull IntRect area)
+    public void loadFromImage(Image image, IntRect area)
             throws TextureCreationException {
         if (!nativeLoadFromImage(Objects.requireNonNull(image), Objects.requireNonNull(area)))
             throw new TextureCreationException("Failed to load texture from image.");
@@ -203,7 +225,7 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
      * @param x     the X offset inside the texture.
      * @param y     the Y offset inside the texture.
      */
-    public void update(@NotNull Image image, int x, int y) {
+    public void update(Image image, int x, int y) {
         nativeUpdate(Objects.requireNonNull(image), x, y);
     }
 
@@ -216,7 +238,7 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
      * @param x      the X offset inside the texture.
      * @param y      the Y offset inside the texture.
      */
-    public void update(@NotNull Window window, int x, int y) {
+    public void update(Window window, int x, int y) {
         nativeUpdate(Objects.requireNonNull(window), x, y);
     }
 
@@ -227,18 +249,6 @@ public class Texture extends SFMLNativeObject implements ConstTexture {
      */
     public final void update(Window window) {
         update(window, 0, 0);
-    }
-
-    private native void nativeBind(CoordinateType type);
-
-    @Override
-    public void bind(@NotNull CoordinateType coordinateType) {
-        nativeBind(Objects.requireNonNull(coordinateType));
-    }
-
-    @Override
-    public final void bind() {
-        bind(CoordinateType.NORMALIZED);
     }
 
     /**
