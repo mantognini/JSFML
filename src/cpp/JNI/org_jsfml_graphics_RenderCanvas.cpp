@@ -8,7 +8,7 @@
 #elif defined(SFML_SYSTEM_LINUX)
 	#include <linux/jawt_md.h>
 #elif defined(SFML_SYSTEM_MACOS)
-	//TODO what is the jawt_md.h include path on Mac OS X?
+    #include <jawt_md.h>
 #endif
 
 //JNI
