@@ -15,9 +15,9 @@
 #include <JSFML/JNI/org_jsfml_graphics_RenderCanvas.h>
 
 //SFML
-#if defined(SFML_SYSTEM_LINUX)
+#if defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_MACOS)
 	#if defined(None)
-		#undef None //not sure what defines this, but it caused trouble on Linux
+		#undef None //not sure what defines this, but it caused trouble on Linux / Mac OS X
 	#endif
 #endif
 
